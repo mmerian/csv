@@ -3,7 +3,7 @@
 .settings/
 
 vendor/
-composer.*
+composer.phar
 *.tar
 
 test/

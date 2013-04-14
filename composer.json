@@ -1,0 +1,17 @@
+{
+    "name": "mmerian/csv",
+    "type": "library",
+    "description": "A CSV data processing library",
+    "keywords": ["csv", "data", "processing"],
+    "authors": [
+        {
+            "name": "Maxime Mérian",
+            "email": "maxime.merian@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Csv": "lib"
+        }
+    }
+}
