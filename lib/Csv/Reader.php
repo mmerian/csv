@@ -104,7 +104,7 @@ class Reader implements \Iterator
 	 * List of valid options
 	 *
 	 * @var array
-	*/
+	 */
 	protected $validOptions = array(
 			'hasHeader',
 			'header',
@@ -145,7 +145,7 @@ class Reader implements \Iterator
 	protected function init()
 	{
 		$this->openFile();
-		$this->readHeader();
+		$this->rewind();
 	}
 
 	/**
@@ -207,6 +207,20 @@ class Reader implements \Iterator
 		if (! in_array($name, $this->validOptions)) {
 			throw new Error('Invalid option ' . $name . '. Valid options are : ' . join(', ', $this->validOptions));
 		}
+		// Check duplicate fields in header
+		if ('header' == $name) {
+			$cnt = array_count_values($value);
+			$duplicates = array();
+			foreach ($cnt as $f => $c) {
+				if ($c > 1) {
+					$duplicates[$f] = $c;
+				}
+			}
+			if (sizeof($duplicates) > 0) {
+				$msg = 'Duplicate fields found in header : ' . join(', ', array_keys($duplicates));
+				throw new Error($msg);
+			}
+		}
 		$this->$name = $value;
 
 		return $this;
@@ -248,6 +262,14 @@ class Reader implements \Iterator
 
 		$this->curLine++;
 
+		if ($this->inputEncoding != $this->outputEncoding) {
+			$inEnc = $this->inputEncoding;
+			$outEnc = $this->outputEncoding;
+			array_walk($this->currentData, function(&$str) use ($inEnc, $outEnc) {
+				$str = mb_convert_encoding($str, $outEnc, $inEnc);
+			});
+		}
+
 		return $this->currentData;
 	}
 
@@ -260,7 +282,9 @@ class Reader implements \Iterator
 	{
 		if ($this->hasHeader && is_null($this->header)) {
 			$this->rewind();
-			$this->header = $this->readLine();
+			$this->setOption('header', $this->readLine());
+			//$this->header = $this->readLine();
+			var_dump($this->header);
 		}
 
 		return $this;
@@ -273,6 +297,7 @@ class Reader implements \Iterator
 	 */
 	public function getHtmlPreview($numLines = 5)
 	{
+		//var_dump($this->header);
 		$html = '<table>';
 		if ($this->header) {
 			$html .= '<thead><tr>';
@@ -331,7 +356,8 @@ class Reader implements \Iterator
 		$this->curLine = 0;
 		if ($this->hasHeader) {
 			$this->curLine++;
-			$this->readLine();
+			//$this->header = $this->readLine();
+			$this->setOption('header', $this->readLine());
 		}
 		$this->readLine();
 	}
@@ -361,30 +387,5 @@ class Reader implements \Iterator
 	public function key()
 	{
 		return $this->curLine;
-	}
-
-	public function preflightCheck($callback = null)
-	{
-		$errors = array();
-		$this->rewind();
-		while ($this->valid()) {
-			try {
-				$line = $this->current();
-				if ($callback) {
-					//try {
-						call_user_func($callback, $line);
-					//} catch (Exception $e) {
-					//	throw $e;
-					//}
-				}
-			} catch (Exception $e) {
-				$errors[] = array(
-					'line' => $this->curLine,
-					'message' => $e->getMessage()
-				);
-			}
-			$this->next();
-		}
-		return $errors;
 	}
 }
