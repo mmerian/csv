@@ -1,8 +1,8 @@
 <?php
 /****************************
  * A CSV parsing library.   *
-* Copyright Maxime Mérian. *
-****************************/
+ * Copyright Maxime Mérian. *
+ ****************************/
 
 namespace Csv;
 
@@ -16,6 +16,7 @@ use Csv\Reader\Error;
  */
 class Reader implements \Iterator
 {
+	protected $mode = 'rb';
 	/**
 	 * Encoding of the file that will be read
 	 *
@@ -157,10 +158,30 @@ class Reader implements \Iterator
 	{
 		/*
 		 * Only close the resource if we opened it
-		*/
+		 */
 		if ($this->file && $this->fp) {
 			fclose($this->fp);
 		}
+	}
+
+	/**
+	 * Returns the CSV file header
+	 *
+	 * @return array|null
+	 */
+	public function getHeader()
+	{
+		return $this->header;
+	}
+
+	/**
+	 * Returns the pointer to the file being processed
+	 *
+	 * @return resource
+	 */
+	public function getFp()
+	{
+		return $this->fp;
 	}
 
 	/**
@@ -234,7 +255,10 @@ class Reader implements \Iterator
 	protected function openFile()
 	{
 		if (is_null($this->fp)) {
-			$this->fp = fopen($this->file, 'r');
+			$this->fp = fopen($this->file, $this->mode);
+			if (! $this->fp) {
+				throw new Error('Unable to open ' . $this->file);
+			}
 		}
 
 		return $this;
