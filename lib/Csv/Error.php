@@ -1,5 +1,5 @@
 <?php
-namespace Csv\Reader;
+namespace Csv;
 
 /**
  * CSV exception class
