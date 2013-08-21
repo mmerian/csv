@@ -6,7 +6,7 @@
 
 namespace Csv;
 
-use Csv\Reader\Error;
+use Csv\Error;
 
 /**
  * A CSV file reader

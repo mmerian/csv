@@ -2,7 +2,7 @@
 namespace Csv\Reader;
 
 /**
- * CSV Reader component exception class
+ * CSV exception class
  *
  * @author Maxime Mérian
  *
