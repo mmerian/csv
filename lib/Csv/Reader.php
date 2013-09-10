@@ -107,12 +107,12 @@ class Reader implements \Iterator
      * @var array
      */
     protected $validOptions = array(
-            'hasHeader',
-            'header',
-            'inputEncoding',
-            'outputEncoding',
-            'delimiter',
-            'enclosure'
+        'hasHeader',
+        'header',
+        'inputEncoding',
+        'outputEncoding',
+        'delimiter',
+        'enclosure'
     );
 
     /**
@@ -298,30 +298,12 @@ class Reader implements \Iterator
     }
 
     /**
-     * Reads the CSV header
-     *
-     * @return \Csv\Reader
-     */
-    protected function readHeader()
-    {
-        if ($this->hasHeader && is_null($this->header)) {
-            $this->rewind();
-            $this->setOption('header', $this->readLine());
-            //$this->header = $this->readLine();
-            var_dump($this->header);
-        }
-
-        return $this;
-    }
-
-    /**
      * Returns an HTML table preview of the csv data
      *
      * @return string
      */
     public function getHtmlPreview($numLines = 5)
     {
-        //var_dump($this->header);
         $html = '<table>';
         if ($this->header) {
             $html .= '<thead><tr>';
@@ -380,7 +362,6 @@ class Reader implements \Iterator
         $this->curLine = 0;
         if ($this->hasHeader) {
             $this->curLine++;
-            //$this->header = $this->readLine();
             $this->setOption('header', $this->readLine());
         }
         $this->readLine();
