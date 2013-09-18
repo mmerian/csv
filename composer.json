@@ -1,7 +1,7 @@
 {
     "name": "mmerian/csv",
     "type": "library",
-    "description": "A CSV data processing library",
+    "description": "A library for easily reading and writing CSV files",
     "keywords": ["csv", "data", "processing"],
     "authors": [
         {
