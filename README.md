@@ -1,4 +1,4 @@
 csv
 ===
 
-A PHP library for processing CSV files
+A PHP library for easily reading and writing CSV files
