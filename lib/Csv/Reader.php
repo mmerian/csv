@@ -361,7 +361,6 @@ class Reader implements \Iterator
         rewind($this->fp);
         $this->curLine = 0;
         if ($this->hasHeader) {
-            $this->curLine++;
             $this->setOption('header', $this->readLine());
         }
         $this->readLine();
