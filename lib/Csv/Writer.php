@@ -16,7 +16,9 @@ class Writer extends Reader
     protected function writeCsv(array $data)
     {
         if (! $this->headerWritten) {
-            $this->headerWritten = true;
+            if ($this->hasHeader && (! $this->header)) {
+                $this->header = array_keys($data);
+            }
             $this->writeHeader();
         }
         return fputcsv($this->fp, $data, $this->delimiter, $this->enclosure);
@@ -24,17 +26,31 @@ class Writer extends Reader
 
     protected function writeHeader()
     {
-        if ($this->header) {
+        if ($this->header && (! $this->headerWritten)) {
+            /*
+             * headerWritten must be set before
+             * calling writeCsv(), since writeCsv()
+             * checks it.
+             */
+            $this->headerWritten = true;
             $this->writeCsv($this->header);
         }
+        return $this;
     }
 
     public function write(array $data)
     {
         $line = null;
         if ($this->header) {
-            foreach ($this->header as $f) {
-                $line[$f] = isset($data[$f]) ? $data[$f] : null;
+            $line = array();
+            foreach ($this->header as $i => $f) {
+                if (isset($data[$f])) {
+                    $line[$f] = $data[$f];
+                } elseif (isset($data[$i])) {
+                    $line[$f] = $data[$i];
+                } else {
+                    $line[$f] = null;
+                }
             }
         } else {
             $line = $data;
