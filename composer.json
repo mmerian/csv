@@ -3,6 +3,11 @@
     "type": "library",
     "description": "A library for easily reading and writing CSV files",
     "keywords": ["csv", "data", "processing"],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/mmerian/csv/issues",
+        "source": "https://github.com/mmerian/csv"
+    },
     "authors": [
         {
             "name": "Maxime Mérian",
