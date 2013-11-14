@@ -1,0 +1,8 @@
+build_settings:
+setup:
+test:
+    php_mess_detector:
+    php_code_sniffer:
+        standard: "PSR2"
+    php_cpd:
+    php_mess_detector:
