@@ -6,4 +6,6 @@ vendor/
 composer.phar
 *.tar
 
+php-cs-fixer.phar
+
 test/

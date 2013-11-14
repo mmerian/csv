@@ -21,6 +21,7 @@ class Writer extends Reader
             }
             $this->writeHeader();
         }
+
         return fputcsv($this->fp, $data, $this->delimiter, $this->enclosure);
     }
 
@@ -35,6 +36,7 @@ class Writer extends Reader
             $this->headerWritten = true;
             $this->writeCsv($this->header);
         }
+
         return $this;
     }
 
@@ -55,6 +57,7 @@ class Writer extends Reader
         } else {
             $line = $data;
         }
+
         return $this->writeCsv($line);
     }
 }

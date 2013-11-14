@@ -118,8 +118,8 @@ class Reader implements \Iterator
     /**
      * Constructor
      *
-     * @param string|resource $file The file to read. Can be provided as the path to the file or as a resource
-     * @param array $options
+     * @param string|resource $file    The file to read. Can be provided as the path to the file or as a resource
+     * @param array           $options
      *
      * @throws Csv\Error
     */
@@ -186,7 +186,7 @@ class Reader implements \Iterator
 
     /**
      *
-     * @param string $field
+     * @param string   $field
      * @param callback $callback
      */
     public function registerFormatter($field, $callback)
@@ -217,7 +217,7 @@ class Reader implements \Iterator
      * Sets an option
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return Csv\Reader
      *
@@ -289,7 +289,7 @@ class Reader implements \Iterator
         if ($this->inputEncoding != $this->outputEncoding) {
             $inEnc = $this->inputEncoding;
             $outEnc = $this->outputEncoding;
-            array_walk($this->currentData, function(&$str) use ($inEnc, $outEnc) {
+            array_walk($this->currentData, function (&$str) use ($inEnc, $outEnc) {
                 $str = mb_convert_encoding($str, $outEnc, $inEnc);
             });
         }
@@ -326,6 +326,7 @@ class Reader implements \Iterator
             $i++;
         }
         $html .= '</tbody></table>';
+
         return $html;
     }
 
@@ -347,8 +348,10 @@ class Reader implements \Iterator
                     }
                 }
             }
+
             return $data;
         }
+
         return $this->currentData;
     }
 

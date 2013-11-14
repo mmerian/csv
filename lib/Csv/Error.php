@@ -9,5 +9,5 @@ namespace Csv;
  */
 class Error extends \Exception
 {
-    
+
 }
