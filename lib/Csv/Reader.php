@@ -338,7 +338,13 @@ class Reader implements \Iterator
     {
         if ($this->header) {
             if (count($this->header) != count($this->currentData)) {
-                throw new Error('CSV line has ' . count($this->currentData) . ' fields, but header has ' . count($this->header) . ' fields');
+                throw new Error(
+                    'CSV line has ' .
+                    count($this->currentData) .
+                    ' fields, but header has ' .
+                    count($this->header) .
+                    ' fields'
+                );
             }
             $data = array_combine($this->header, $this->currentData);
             foreach ($this->formatters as $field => $callback) {
