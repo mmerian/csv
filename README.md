@@ -66,4 +66,10 @@ $reader = new Reader($file, array(
 $reader->registerFormatter('birthdate', function($date) {
     return preg_replace('/^([0-9]+)-([0-9]+)-([0-9]+)$/', '$3/$2/$1', $date);
 });
+
+foreach ($reader as $line) {
+    echo $line['birthdate']; // will echo 12/05/1972 for the first line
+}
 ```
+
+
