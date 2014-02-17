@@ -8,6 +8,13 @@ Usage
 
 ### Reading CSV files
 
+Say you have a CSV file that looks like this :
+```
+first_name;last_name;gender;birthdate
+John;Smith;M;1972-05-12
+Susan;Chatman;F;1972-05-12
+```
+
 Instanciating the reader is really easy :
 
 ```php
@@ -17,7 +24,8 @@ use Csv\Reader;
 $reader = new Reader($file, array(
     'hasHeader' => true,
     'inputEncoding' => 'ISO-8859-15',
-    'outputEncoding' => 'UTF-8'
+    'outputEncoding' => 'UTF-8',
+    'delimiter' => ';'
 ));
 
 foreach ($reader as $line) {
@@ -26,6 +34,7 @@ foreach ($reader as $line) {
      * If the CSV file has an header,
      * the array keys are the header fields
      */
+    echo $line['first_name'];
 }
 ```
 
@@ -40,3 +49,21 @@ Available options are :
   If `'inputEncoding'` and `'outputEncoding'` are different, the reader automatically uses mbstring to convert
 - `'delimiter'` : The CSV delimiter
 - `'enclosure'` : The CSV enclosure
+
+### Automatic field processing
+The reader is also able to apply formatting functions to your CSV fields.
+
+```php
+
+use Csv\Reader;
+
+$reader = new Reader($file, array(
+    'hasHeader' => true,
+    'inputEncoding' => 'ISO-8859-15',
+    'outputEncoding' => 'UTF-8',
+    'delimiter' => ';'
+));
+$reader->registerFormatter('birthdate', function($date) {
+    return preg_replace('/^([0-9]+)-([0-9]+)-([0-9]+)$/', '$3/$2/$1', $date);
+});
+```
