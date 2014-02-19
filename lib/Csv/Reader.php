@@ -125,6 +125,7 @@ class Reader implements \Iterator
     */
     public function __construct($file, array $options = array())
     {
+        ini_set('auto_detect_line_endings', true);
         if (is_resource($file)) {
             $this->fp = $file;
         } elseif (is_string($file)) {
