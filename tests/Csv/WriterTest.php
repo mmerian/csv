@@ -6,10 +6,10 @@ class WriterTest extends \PHPUnit_Framework_TestCase
     public function testCount()
     {
         $w = new Writer(tmpfile(), array(
-        	'hasHeader' => true
+            'hasHeader' => true
         ));
         $w->write(array(
-        	'id' => 1,
+            'id' => 1,
             'first_name' => 'John',
             'last_name' => 'Doe',
             'birthdate' => '1972-05-22'
