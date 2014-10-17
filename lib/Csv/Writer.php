@@ -58,6 +58,8 @@ class Writer extends Reader
             $line = $data;
         }
 
+        $this->curLine++;
+
         return $this->writeCsv($line);
     }
 }

@@ -1,11 +1,1 @@
-.buildpath
-.project
-.settings/
-
-vendor/
-composer.phar
-*.tar
-
-php-cs-fixer.phar
-
-test/
+vendor
