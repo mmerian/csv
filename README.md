@@ -1,6 +1,8 @@
 csv
 ===
 
+[![Build Status](https://travis-ci.org/mmerian/csv.svg?branch=master)](https://travis-ci.org/mmerian/csv)
+
 This library is designed to help you read and write csv files.
 
 Usage
