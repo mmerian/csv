@@ -11,9 +11,13 @@
     "authors": [
         {
             "name": "Maxime Mérian",
-            "email": "maxime.merian@gmail.com"
+            "email": "maxime@merian.me"
         }
     ],
+    "require": {
+        "php": ">= 5.3.0",
+        "ext-mbstring": "*"
+    },
     "autoload": {
         "psr-0": {
             "Csv": "lib"

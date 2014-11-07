@@ -3,13 +3,19 @@ namespace Csv;
 
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testOpenEmpty()
+    protected $reader;
+
+    protected function setUp()
     {
-        $reader = new Reader(dirname(__DIR__) . '/sample-data/us-500.csv', array(
+        $this->reader= new Reader(dirname(__DIR__) . '/sample-data/us-500.csv', array(
             'hasHeader' => true,
             'delimiter' => ',',
             'inputEncoding' => 'ISO-8859-15'
         ));
+    }
+
+    public function testHeader()
+    {
         $expectedHeader = array (
             'first_name',
             'last_name',
@@ -24,44 +30,71 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
             'email',
             'web'
         );
-        $this->assertEquals($reader->getHeader(), $expectedHeader);
+        $this->assertEquals($this->reader->getHeader(), $expectedHeader);
     }
 
     public function testLineCount()
     {
-        $reader = new Reader(dirname(__DIR__) . '/sample-data/us-500.csv', array(
-            'hasHeader' => true,
-            'delimiter' => ',',
-            'inputEncoding' => 'ISO-8859-15'
-        ));
-        $this->assertEquals($reader->key(), 2);
+        $this->assertEquals($this->reader->key(), 2);
         $i = 0;
-        foreach ($reader as $line) {
+        foreach ($this->reader as $line) {
             $i++;
             if (5 == $i) {
                 break;
             }
         }
-        $this->assertEquals($reader->key(), 6);
+        $this->assertEquals($this->reader->key(), 6);
     }
 
     public function testFormatter()
     {
-        $reader = new Reader(dirname(__DIR__) . '/sample-data/us-500.csv', array(
-            'hasHeader' => true,
-            'delimiter' => ',',
-            'inputEncoding' => 'ISO-8859-15'
-        ));
-        $reader->registerFormatter('first_name', function($str) {
+        $this->reader->registerFormatter('first_name', function($str) {
             return strtoupper($str);
         });
-        $reader->registerFormatter('/^phone.*/', function($str) {
+        $this->reader->registerFormatter('/^phone.*/', function($str) {
             return str_replace('-', '', $str);
         });
-        $line = $reader->current();
+        $line = $this->reader->current();
 
         $this->assertEquals($line['first_name'], 'JAMES');
         $this->assertEquals($line['phone1'], '5046218927');
         $this->assertEquals($line['phone2'], '5048451427');
+    }
+
+    public function testIterator()
+    {
+        $line = null;
+        while ($line = $this->reader->fetch()) {
+
+        }
+        $this->assertEquals($line, false);
+    }
+
+    public function testBlankLines()
+    {
+        $this->reader= new Reader(dirname(__DIR__) . '/sample-data/blank-lines.csv', array(
+            'hasHeader' => true,
+            'delimiter' => ';',
+            'inputEncoding' => 'ISO-8859-15'
+        ));
+        while ($line = $this->reader->fetch()) {
+
+        }
+    }
+
+    /**
+     * @expectedException \Csv\Error
+     */
+    public function testBlankLinesException()
+    {
+        $this->reader= new Reader(dirname(__DIR__) . '/sample-data/blank-lines.csv', array(
+            'hasHeader' => true,
+            'delimiter' => ';',
+            'inputEncoding' => 'ISO-8859-15',
+            'ignoreBlankLines' => false
+        ));
+        while ($line = $this->reader->fetch()) {
+
+        }
     }
 }

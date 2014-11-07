@@ -44,6 +44,13 @@ class Reader implements \Iterator
     protected $enclosure = '"';
 
     /**
+     * Should the reader silently ignore empty lines ?
+     *
+     * @var bool
+     */
+    protected $ignoreEmptyLines = true;
+
+    /**
      * Does the CSV file hae a header with column names ?
      *
      * @var string
@@ -110,7 +117,8 @@ class Reader implements \Iterator
         'inputEncoding',
         'outputEncoding',
         'delimiter',
-        'enclosure'
+        'enclosure',
+        'ignoreEmptyLines'
     );
 
     /**
@@ -264,10 +272,7 @@ class Reader implements \Iterator
     }
 
     /**
-     * Read the next line.
-     *
-     * If no new line can be read, this
-     * method returns false
+     * Read the next line, and applies encoding conversion if required
      *
      * @return array
      *
@@ -279,10 +284,19 @@ class Reader implements \Iterator
             throw new Error('End of stream reached, no data to read');
         }
         $this->currentData = fgetcsv($this->fp, null, $this->delimiter, $this->enclosure);
-        if (! $this->valid()) {
+        // Check if EOF is reached
+        if (false === $this->currentData) {
             return false;
+        } elseif (array(null) == $this->currentData) {
+            /*
+             * An empty line in the csv file
+             * is returned as an array containing a NULL value.
+             */
+            if (! $this->ignoreEmptyLines) {
+                throw new Error('Empty line found in file');
+            }
+            return $this->readLine();
         }
-
         $this->curLine++;
 
         if ($this->inputEncoding != $this->outputEncoding) {
@@ -294,6 +308,16 @@ class Reader implements \Iterator
         }
 
         return $this->currentData;
+    }
+
+    public function fetch()
+    {
+        if (! $this->valid()) {
+            return false;
+        }
+        $line = $this->current();
+        $this->readLine();
+        return $line;
     }
 
     /**
