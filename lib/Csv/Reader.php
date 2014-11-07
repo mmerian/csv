@@ -348,7 +348,9 @@ class Reader implements \Iterator
             $data = array_combine($this->header, $this->currentData);
             foreach ($this->formatters as $field => $callback) {
                 foreach ($data as $k => &$v) {
-                    if (preg_match($field, $k)) {
+                    if ($field == $k) {
+                        $v = $callback($v);
+                    } elseif (@preg_match($field, $k)) {
                         $v = $callback($v);
                     }
                 }

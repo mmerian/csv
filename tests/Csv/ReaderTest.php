@@ -44,4 +44,24 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertEquals($reader->key(), 6);
     }
+
+    public function testFormatter()
+    {
+        $reader = new Reader(dirname(__DIR__) . '/sample-data/us-500.csv', array(
+            'hasHeader' => true,
+            'delimiter' => ',',
+            'inputEncoding' => 'ISO-8859-15'
+        ));
+        $reader->registerFormatter('first_name', function($str) {
+            return strtoupper($str);
+        });
+        $reader->registerFormatter('/^phone.*/', function($str) {
+            return str_replace('-', '', $str);
+        });
+        $line = $reader->current();
+
+        $this->assertEquals($line['first_name'], 'JAMES');
+        $this->assertEquals($line['phone1'], '5046218927');
+        $this->assertEquals($line['phone2'], '5048451427');
+    }
 }
