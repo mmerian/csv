@@ -38,6 +38,12 @@ foreach ($reader as $line) {
      */
     echo $line['first_name'];
 }
+
+// Or
+
+while ($line = $reader->fetch() {
+    // Process line
+}
 ```
 
 In this example, `$file` can be the path to an existing file, or a pointer to an already open file.
@@ -51,6 +57,7 @@ Available options are :
   If `'inputEncoding'` and `'outputEncoding'` are different, the reader automatically uses mbstring to convert
 - `'delimiter'` : The CSV delimiter
 - `'enclosure'` : The CSV enclosure
+- `'ignoreEmptyLines'`: If set to true (the default), the reader will silently ignore empty lines. Otherwise, an exception will be raised if an empty line is encountered
 
 ### Automatic field processing
 The reader is also able to apply formatting functions to your CSV fields.
