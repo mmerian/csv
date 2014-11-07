@@ -41,7 +41,7 @@ foreach ($reader as $line) {
 
 // Or
 
-while ($line = $reader->fetch() {
+while ($line = $reader->fetch()) {
     // Process line
 }
 ```
