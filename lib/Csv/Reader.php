@@ -310,6 +310,13 @@ class Reader implements \Iterator
         return $this->currentData;
     }
 
+    /**
+     * Fetches and returns the next line.
+     *
+     * Returns false if end of file is reached.
+     *
+     * @return array|bool
+     */
     public function fetch()
     {
         if (! $this->valid()) {
