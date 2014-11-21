@@ -3,7 +3,7 @@ namespace Csv;
 
 class Writer extends Reader
 {
-    protected $mode = 'r+b';
+    protected $mode = 'a+b';
 
     protected $headerWritten = false;
 

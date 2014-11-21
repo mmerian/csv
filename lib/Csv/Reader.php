@@ -134,15 +134,8 @@ class Reader implements \Iterator
         ini_set('auto_detect_line_endings', true);
         if (is_resource($file)) {
             $this->fp = $file;
-        } elseif (is_string($file)) {
-            if (! file_exists($file)) {
-                throw new Error($file . ' does not exist');
-            } elseif (! is_readable($file)) {
-                throw new Error($file . ' is not readable');
-            }
-            $this->file = $file;
         } else {
-            throw new Error('File must be a valid path or resource');
+            $this->file = $file;
         }
 
         $this->setOptions($options);
@@ -262,7 +255,7 @@ class Reader implements \Iterator
     protected function openFile()
     {
         if (is_null($this->fp)) {
-            $this->fp = fopen($this->file, $this->mode);
+            $this->fp = @fopen($this->file, $this->mode);
             if (! $this->fp) {
                 throw new Error('Unable to open ' . $this->file);
             }
