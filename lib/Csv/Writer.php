@@ -22,7 +22,7 @@ class Writer extends Reader
             $this->writeHeader();
         }
 
-        return fputcsv($this->fp, $data, $this->delimiter, $this->enclosure);
+        return fputcsv($this->fp, array_map('strval', $data), $this->delimiter, $this->enclosure);
     }
 
     protected function writeHeader()
