@@ -2,6 +2,7 @@ csv
 ===
 
 [![Build Status](https://travis-ci.org/mmerian/csv.svg?branch=master)](https://travis-ci.org/mmerian/csv)
+[![Latest Stable Version](https://poser.pugx.org/mmerian/csv/v/stable)](https://packagist.org/packages/mmerian/csv) [![Total Downloads](https://poser.pugx.org/mmerian/csv/downloads)](https://packagist.org/packages/mmerian/csv) [![Latest Unstable Version](https://poser.pugx.org/mmerian/csv/v/unstable)](https://packagist.org/packages/mmerian/csv) [![License](https://poser.pugx.org/mmerian/csv/license)](https://packagist.org/packages/mmerian/csv)
 
 This library is designed to help you read and write csv files.
 
