@@ -1,4 +1,5 @@
 <?php
+
 namespace Csv;
 
 class Writer extends Reader
@@ -15,11 +16,17 @@ class Writer extends Reader
 
     protected function writeCsv(array $data)
     {
-        if (! $this->headerWritten) {
-            if ($this->hasHeader && (! $this->header)) {
+        if (!$this->headerWritten) {
+            if ($this->hasHeader && (!$this->header)) {
                 $this->header = array_keys($data);
             }
             $this->writeHeader();
+        }
+
+        if ($this->inputEncoding != $this->outputEncoding) {
+            $data = array_map(function ($str) {
+                return mb_convert_encoding($str, $this->outputEncoding, $this->inputEncoding);
+            }, $data);
         }
 
         return fputcsv($this->fp, $data, $this->delimiter, $this->enclosure);
@@ -27,7 +34,7 @@ class Writer extends Reader
 
     protected function writeHeader()
     {
-        if ($this->header && (! $this->headerWritten)) {
+        if ($this->header && (!$this->headerWritten)) {
             /*
              * headerWritten must be set before
              * calling writeCsv(), since writeCsv()
@@ -58,7 +65,7 @@ class Writer extends Reader
             $line = $data;
         }
 
-        $this->curLine++;
+        ++$this->curLine;
 
         return $this->writeCsv($line);
     }
