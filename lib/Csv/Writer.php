@@ -25,7 +25,11 @@ class Writer extends Reader
 
         if ($this->inputEncoding != $this->outputEncoding) {
             $data = array_map(function ($str) {
-                return mb_convert_encoding($str, $this->outputEncoding, $this->inputEncoding);
+                return mb_convert_encoding(strval($str), $this->outputEncoding, $this->inputEncoding);
+            }, $data);
+        } else {
+            $data = array_map(function ($str) {
+                return strval($str);
             }, $data);
         }
 

@@ -67,4 +67,25 @@ class WriterTest extends \PHPUnit_Framework_TestCase
         $w = null;
         unlink($file);
     }
+
+    public function testWriteIntegers()
+    {
+        $w = new Writer(tmpfile(), array(
+            'hasHeader' => true
+        ));
+
+        $numbers = array(
+            'zero' => 0,
+            'one' => 1,
+            'two' => 2,
+            'three' => 3,
+            'four' => 4,
+            'five' => 5,
+        );
+
+        $w->write($numbers);
+        foreach ($w as $line) {
+            $this->assertEquals($line, $numbers);
+        }
+    }
 }
