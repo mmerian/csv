@@ -396,11 +396,11 @@ class Reader implements \Iterator
         if ($meta['seekable']) {
             rewind($this->fp);
             $this->curLine = 0;
-            if ($this->hasHeader) {
-                $this->setOption('header', $this->readLine());
-            }
-            $this->readLine();
         }
+        if ($this->hasHeader) {
+            $this->setOption('header', $this->readLine());
+        }
+        $this->readLine();
     }
 
     /**
