@@ -392,12 +392,15 @@ class Reader implements \Iterator
      */
     public function rewind()
     {
-        rewind($this->fp);
-        $this->curLine = 0;
-        if ($this->hasHeader) {
-            $this->setOption('header', $this->readLine());
+        $meta = stream_get_meta_data($this->fp);
+        if ($meta['seekable']) {
+            rewind($this->fp);
+            $this->curLine = 0;
+            if ($this->hasHeader) {
+                $this->setOption('header', $this->readLine());
+            }
+            $this->readLine();
         }
-        $this->readLine();
     }
 
     /**
